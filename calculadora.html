@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Calculator</title>
+    <link rel="stylesheet" href="disseny.css" />
+    <script src="calculadora.js"></script>
+</head>
+ 
+<body>
+    <div id="calculator">
+        <h1 id="title">Calculator</h1>
+        <p type="text" id="display"></p>
+        <div id="first-row-numbers">
+            <button id="removeOneNumber" onclick="buttonDeleteOneNumber()">CE</button>
+            <button class="operators" onclick="buttonClear()">C</button>
+            <button class="operators" value="/" onclick="takeValue(this.value)">/</button>
+        </div>
+        <div id="second-row-numbers">
+            <button class="numbers" value="7" onclick="takeValue(this.value)">7</button>
+            <button class="numbers" value="8" onclick="takeValue(this.value)">8</button>
+            <button class="numbers" value="9" onclick="takeValue(this.value)">9</button>
+            <button class="operators" value="x" onclick="takeValue(this.value)">x</button>
+        </div>
+        <div id="third-row-numbers">
+            <button class="numbers" value="4" onclick="takeValue(this.value)">4</button>
+            <button class="numbers" value="5" onclick="takeValue(this.value)">5</button>
+            <button class="numbers" value="6" onclick="takeValue(this.value)">6</button>
+            <button class="operators" value="-" onclick="takeValue(this.value)">-</button>
+        </div>
+        <div id="fourth-row-numbers">
+            <button class="numbers" value="1" onclick="takeValue(this.value)">1</button>
+            <button class="numbers" value="2" onclick="takeValue(this.value)">2</button>
+            <button class="numbers" value="3" onclick="takeValue(this.value)">3</button>
+            <button class="operators" value="+" onclick="takeValue(this.value)">+</button>
+        </div>
+        <div id="fifth-row-numbers">
+            <button class="zero" value="0" onclick="takeValue(this.value)">0</button>
+            <button class="numbers" value="," onclick="takeValue(this.value)">,</button>
+            <button class="operators" value="=" onclick="buttonEquals()">=</button>
+        </div>
+    </div>
+</body>
+
+
+</html>
