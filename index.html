@@ -12,7 +12,8 @@
         <h1 id="title">Calculator</h1>
         <input type="text" id="display" placeholder="0" disabled></input>
         <div id="first-row-numbers">
-            <button id="removeOneNumber" onclick="buttonDeleteOneNumber()">CE</button>
+            <button id="removeOneNumber" class="operators" onclick="buttonDeleteOneNumber()">CE</button>
+            <button class="operators" onclick="changeSign()">±</button>
             <button class="operators" onclick="buttonClear()">C</button>
             <button class="operators" value="/" onclick="setHighlight(event)">/</button>
 

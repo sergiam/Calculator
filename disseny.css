@@ -33,12 +33,6 @@ top: 5px;
 font-size: 37px;
 }
 
-#removeOneNumber{
-width: 100px;
-background-color: #d1d1d1;
-border-radius: 20px; 
-font-size: 35px; 
-}
 
 .zero{
 width: 100px;
@@ -60,7 +54,7 @@ width: 50px;
 .operators{
 size: 50px;
 border-radius: 50px; 
-font-size: 35px; 
+font-size: 25px; 
 height: 50px; 
 width: 50px; 
 background-color: #d1d1d1;
