@@ -36,6 +36,11 @@ function buttonClear(){
     removeHighlight();
 }
 
+function buttonDeleteOneNumber(){
+    removeHighlight();
+    document.getElementById('display').value = pantalla.value-1;
+}
+
 /*
 function takeValue(x){
     if (x == "," && document.getElementById('display').value == 0)
@@ -65,14 +70,10 @@ function buttonDeleteOneNumber(x){
     document.getElementById('display').value = x;
 }
 
-function buttonClear(){
-    document.getElementById("display").value = "";
-    removeHighlight();
-}
-
 */
 
 function teclado (event) { 
+    event.preventDefault();
     events = event || window.event;
     k=events.keyCode; 
   
@@ -93,6 +94,7 @@ function teclado (event) {
     if (k==111) {add('/')} //tecla división
     if (k==188) {add('.')}
     if (k==106) {add('*')}
+    if (k==189) {add('-')}
     if (k==17) {changeSign()}
     if (k==13) {calc()} //Tecla igual: intro
     if (k==27) {buttonClear()} //Tecla borrado total: "esc"
