@@ -17,14 +17,6 @@ border-radius: 10px;
 text-align: right;
 }
 
-.hoverOperator{
-    color: rgb(217, 255, 0);
-    size: 50px;
-    border-radius: 50px; 
-    font-size: 35px; 
-    height: 50px; 
-    width: 50px; 
-}
 
 #title{
 color: white;

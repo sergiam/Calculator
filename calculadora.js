@@ -1,14 +1,68 @@
+//const display = document.getElementById("display");
+var operatorOn = false;
+var num1;
+var num2;
+var operator;
+
+
 window.onload = function(){ //Acciones tras cargar la página
     pantalla=document.getElementById("display"); //elemento pantalla de salida
     document.onkeydown = teclado; //función teclado disponible
 }
 
-function setResult(value) {
-    document.getElementById('display').value = value;
+
+function add(a)
+{	
+    if (!operatorOn && (num1 === undefined || num1 == "")) {
+        document.getElementById("display").value=a;
+        num1 = document.getElementById("display").value;
+        console.log(num1);
+    } else if(!operatorOn) {
+        document.getElementById("display").value+=a;
+        num1 = document.getElementById("display").value;
+        console.log(num1);
+    } else if (operatorOn && (num2 === undefined || num2 == "")){
+        document.getElementById("display").value=a;
+        num2 = document.getElementById("display").value;
+        console.log(num2);
+    } else {
+        document.getElementById("display").value+=a;
+        num2 = document.getElementById("display").value;
+        console.log(num2);
+    }
 }
 
-function getResult() {
-    return(document.getElementById('display').value);
+//Cambiar nombres de variables para que sean coherentes
+function operation(c) {
+    c.style.backgroundColor='red';
+    operatorOn = true;
+    operator = c;
+}
+
+function calc(){
+    var resul;
+    console.log(operator.value);
+		if (operator.value == '*') {
+           resul = parseFloat(num1) * parseFloat(num2);
+        }
+        console.log(resul);
+        return resul;
+// Hacer las demás operaciones restantes igual que esta
+}
+
+function buttonEqual(){
+    var a = calc();
+    console.log(a);
+    document.getElementById('display').value = a; 
+    reset();
+}
+
+function reset(){
+    operator.style.backgroundColor='#d1d1d1';
+    operator = undefined;
+    num1 = "";
+    num2 = "";
+    
 }
 
 function changeSign() {
@@ -17,30 +71,18 @@ function changeSign() {
     document.getElementById('display').value = resul;
 }
 
-function add(key) { 
-    var result = getResult();
-    if (result!='0' || isNaN(key)){ 
-        setResult(result + key);
-    }
-    else setResult(key);
-   
-}
-
-function calc() {
-    var result = eval(getResult()); 
-    setResult(result);
-}
-
 function buttonClear(){
     document.getElementById("display").value = "";
-    removeHighlight();
+    reset();
 }
 
 function buttonDeleteOneNumber(){
     removeHighlight();
-    document.getElementById('display').value = pantalla.value-1;
+    var num = document.getElementById("display").value;
+    var str = num.toString();
+    num = str.slice(0, str.length - 1);
+    document.getElementById("display").value= num;
 }
-
 /*
 function takeValue(x){
     if (x == "," && document.getElementById('display').value == 0)
@@ -51,19 +93,6 @@ function takeValue(x){
     }
 }
 
-function setHighlight(x){
-    removeHighlight();
-    let changeClass = x.currentTarget.classList
-    changeClass.add("hoverOperator")
-}   
-
-function removeHighlight(){
-    let changeClass = document.getElementsByClassName('operators');
-    for (let index = 0; index < changeClass.length; index++) {
-        changeClass[index].classList.remove('hoverOperator');
-        
-    }
-}
 
 function buttonDeleteOneNumber(x){
     removeHighlight();
