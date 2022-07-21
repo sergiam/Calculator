@@ -1,87 +1,144 @@
-//const display = document.getElementById("display");
+const display = document.getElementById("display");
 var operatorOn = false;
 var num1;
 var num2;
 var operator;
+var operationResult;
+
 
 
 window.onload = function(){ //Acciones tras cargar la página
-    pantalla=document.getElementById("display"); //elemento pantalla de salida
-    document.onkeydown = teclado; //función teclado disponible
+    pantalla=display; //elemento pantalla de salida
+    window.addEventListener('keydown',teclado);
 }
 
 
-function add(a)
+//Añade los números correspondientes a la calculadora
+function add(nums)
 {	
-    if (!operatorOn && (num1 === undefined || num1 == "")) {
-        document.getElementById("display").value=a;
-        num1 = document.getElementById("display").value;
+    if (nums == "." && display.value == 0) {
+        display.value = "0."
+    }
+    else if (!operatorOn && (num1 === undefined || num1 == "")) {
+        display.value=nums;
+        num1 = display.value;
+        operationResult = null;
         console.log(num1);
     } else if(!operatorOn) {
-        document.getElementById("display").value+=a;
-        num1 = document.getElementById("display").value;
+        display.value+=nums;
+        num1 = display.value;
         console.log(num1);
     } else if (operatorOn && (num2 === undefined || num2 == "")){
-        document.getElementById("display").value=a;
-        num2 = document.getElementById("display").value;
+        display.value=nums;
+        num2 = display.value;
         console.log(num2);
     } else {
-        document.getElementById("display").value+=a;
-        num2 = document.getElementById("display").value;
+        display.value+=nums;
+        num2 = display.value;
         console.log(num2);
     }
 }
 
 //Cambiar nombres de variables para que sean coherentes
-function operation(c) {
-    c.style.backgroundColor='red';
+
+//Almacena el signo de la operación (+,-,*,/)
+function operation(sign) {
+    sign.style.backgroundColor='#ff0000';
     operatorOn = true;
-    operator = c;
+    operator = sign;
+    console.log(operator);
 }
 
 function calc(){
-    var resul;
-    console.log(operator.value);
+    
+    var result;
 		if (operator.value == '*') {
-           resul = parseFloat(num1) * parseFloat(num2);
-        }
-        console.log(resul);
-        return resul;
-// Hacer las demás operaciones restantes igual que esta
-}
+           result = parseFloat(num1) * parseFloat(num2);
+           console.log(operator.value)
+            return result;
+        } else if (operator.value == '+') {
+            result = parseFloat(num1) + parseFloat(num2);
+            console.log(operator.value)
+            return result;
+        
+        } else if (operator.value == '-') {
+            result = parseFloat(num1) - parseFloat(num2);
+            console.log(operator.value)
+            return result;
+            
+        } else if (operator.value == '/' && num2 == '0'){
+            console.log('error');
+            result = display.value = 'ERROR';
+            return result;
+        } else if (operator.value == '/') {
+            result = parseFloat(num1) / parseFloat(num2);
+            console.log(operator.value)
+            return result;
+        } 
+    } 
 
-function buttonEqual(){
-    var a = calc();
-    console.log(a);
-    document.getElementById('display').value = a; 
-    reset();
-}
 
-function reset(){
-    operator.style.backgroundColor='#d1d1d1';
-    operator = undefined;
-    num1 = "";
-    num2 = "";
+
+function newOperation() {
+    console.log('nueva operacion');
+    num1 = operationResult;
+    operationResult = calc();
+    display.value = operationResult;
     
 }
 
+function buttonEqual(){
+    if (operationResult == null) {
+    operationResult = calc();
+    console.log(operationResult);
+    if (isNaN(operationResult)) {
+        result = display.value = 'ERROR';
+    } else{
+        display.value = operationResult;
+    }
+    if (operator != null){ 
+        operator.style.backgroundColor = '#d1d1d1';
+        operator = null;
+    }
+    operator = null;
+} else {
+        newOperation();
+    }
+
+    reset();
+}
+
+
+//Función reseteo calculadora
+function reset(){
+    console.log(operator);
+    if (operator != null){ 
+        operator.style.backgroundColor = '#d1d1d1';
+        operator = null;
+    }
+    num1 = "";
+    num2 = "";
+    operatorOn = false;
+    
+}
+
+// Cambia signo a positivo o negativo
 function changeSign() {
-    var x = document.getElementById('display').value;
+    var x = display.value;
     var resul = -x;
-    document.getElementById('display').value = resul;
+    display.value = resul;
 }
 
 function buttonClear(){
-    document.getElementById("display").value = "";
+    display.value = "";
     reset();
 }
 
 function buttonDeleteOneNumber(){
-    removeHighlight();
-    var num = document.getElementById("display").value;
-    var str = num.toString();
-    num = str.slice(0, str.length - 1);
-    document.getElementById("display").value= num;
+    var num = display.value;
+    num = num.substring(0, num.length - 1);
+    display.value = num;
+    num1 = num;
 }
 /*
 function takeValue(x){
@@ -117,17 +174,16 @@ function teclado (event) {
        p=String(p);
        add(p);
        }
-    if (k==88) {add('*')} //tecla multiplicación
-    if (k==107) {add('+')} //tecla suma
-    if (k==109) {add('-')} //tecla resta
-    if (k==111) {add('/')} //tecla división
+    if (k==88) {operation('*')} //tecla multiplicación
+    if (k==107) {operation('+')} //tecla suma
+    if (k==109) {operation('-')} //tecla resta
+    if (k==111) {operation('/')} //tecla división
     if (k==188) {add('.')}
-    if (k==106) {add('*')}
-    if (k==189) {add('-')}
+    if (k==106) {operation('*')}
+    if (k==189) {operation('-')}
     if (k==17) {changeSign()}
     if (k==13) {calc()} //Tecla igual: intro
     if (k==27) {buttonClear()} //Tecla borrado total: "esc"
-    if (k==8) {retro()} //Retroceso en escritura : tecla retroceso.
-    if (k==36) {borradoParcial()} //Tecla borrado parcial: tecla de inicio.
+    if (k==8) {buttonDeleteOneNumber()} //Retroceso en escritura : tecla retroceso.
     }
     
