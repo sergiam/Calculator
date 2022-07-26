@@ -5,13 +5,10 @@ var num2;
 var operator;
 var operationResult;
 
-
-
 window.onload = function(){ //Acciones tras cargar la página
     pantalla=display; //elemento pantalla de salida
     window.addEventListener('keydown',teclado);
 }
-
 
 //Añade los números correspondientes a la calculadora
 function add(nums)
@@ -25,6 +22,9 @@ function add(nums)
         operationResult = null;
         console.log(num1);
     } else if(!operatorOn) {
+        if (num1.length > 9) {
+            return;
+        }
         display.value+=nums;
         num1 = display.value;
         console.log(num1);
@@ -33,6 +33,9 @@ function add(nums)
         num2 = display.value;
         console.log(num2);
     } else {
+        if (num2.length > 9) {
+            return;
+        }
         display.value+=nums;
         num2 = display.value;
         console.log(num2);
@@ -40,9 +43,11 @@ function add(nums)
 }
 
 //Cambiar nombres de variables para que sean coherentes
-
 //Almacena el signo de la operación (+,-,*,/)
 function operation(sign) {
+    if (operator != null) {
+        operator.style.backgroundColor='#d1d1d1';
+    } 
     sign.style.backgroundColor='#ff0000';
     operatorOn = true;
     operator = sign;
@@ -50,7 +55,6 @@ function operation(sign) {
 }
 
 function calc(){
-    
     var result;
 		if (operator.value == '*') {
            result = parseFloat(num1) * parseFloat(num2);
@@ -75,15 +79,42 @@ function calc(){
             console.log(operator.value)
             return result;
         } 
+} 
+
+function roundResult(){
+   
+    var numToString;
+    var isDecimal = false;
+    var integerText = '';
+    var decimalText = '0.';
+    
+    numToString = operationResult.toString(); 
+    
+    for(i = 0; i < numToString.length; i++) {
+        
+        if (numToString[i] == '.'){
+            isDecimal = true;
+        } else if (!isDecimal) {
+            integerText = integerText + numToString[i];
+        
+        } else if (isDecimal){
+            decimalText = decimalText + numToString[i];
+        }
     } 
-
-
+    
+    decimalText = parseFloat(decimalText).toFixed(10 - integerText.length);
+    operationResult = parseFloat(integerText) + parseFloat(decimalText);
+}
 
 function newOperation() {
     console.log('nueva operacion');
     num1 = operationResult;
     operationResult = calc();
+    if (operationResult.toString().includes('.')){
+    roundResult();
+    }
     display.value = operationResult;
+    
     
 }
 
@@ -93,7 +124,13 @@ function buttonEqual(){
     console.log(operationResult);
     if (isNaN(operationResult)) {
         result = display.value = 'ERROR';
-    } else{
+    } else if (operationResult > 9999999999 || operationResult < -9999999999) {
+        display.value = 'ERROR';
+    } 
+    else {
+        if (operationResult.toString().includes('.')){
+        roundResult();
+        }
         display.value = operationResult;
     }
     if (operator != null){ 
@@ -107,7 +144,6 @@ function buttonEqual(){
 
     reset();
 }
-
 
 //Función reseteo calculadora
 function reset(){
