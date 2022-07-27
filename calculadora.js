@@ -1,4 +1,5 @@
 const display = document.getElementById("display");
+const operatorButtons = document.querySelectorAll('.operators');
 var operatorOn = false;
 var num1;
 var num2;
@@ -123,7 +124,7 @@ function buttonEqual(){
     operationResult = calc();
     console.log(operationResult);
     if (isNaN(operationResult)) {
-        result = display.value = 'ERROR';
+        display.value = 'ERROR';
     } else if (operationResult > 9999999999 || operationResult < -9999999999) {
         display.value = 'ERROR';
     } 
@@ -197,29 +198,26 @@ function buttonDeleteOneNumber(x){
 function teclado (event) { 
     event.preventDefault();
     events = event || window.event;
-    k=events.keyCode; 
+    k=events.key; 
   
-    if (k>47 && k<58) { 
-       p=k-48; 
-       p=String(p)
-       add(p);
-       }	
-
-    if (k>95 && k<106) {
-       p=k-96;
-       p=String(p);
-       add(p);
-       }
-    if (k==88) {operation('*')} //tecla multiplicación
-    if (k==107) {operation('+')} //tecla suma
-    if (k==109) {operation('-')} //tecla resta
-    if (k==111) {operation('/')} //tecla división
-    if (k==188) {add('.')}
-    if (k==106) {operation('*')}
-    if (k==189) {operation('-')}
-    if (k==17) {changeSign()}
-    if (k==13) {calc()} //Tecla igual: intro
-    if (k==27) {buttonClear()} //Tecla borrado total: "esc"
-    if (k==8) {buttonDeleteOneNumber()} //Retroceso en escritura : tecla retroceso.
+    if (k == 1) add(k);
+    if (k == 2) add(k);
+    if (k == 3) add(k);
+    if (k == 4) add(k);
+    if (k == 5) add(k);
+    if (k == 6) add(k);
+    if (k == 7) add(k);
+    if (k == 8) add(k);
+    if (k == 9) add(k);
+    if (k == 0) add(k);
+    if (k == '+') {operatorButtons.forEach (operatorButton => {if (operatorButton.value == '+') operation(operatorButton)})};
+    if (k == '-') {operatorButtons.forEach (operatorButton => {if (operatorButton.value == '-') operation(operatorButton)})};
+    if (k == '*') {operatorButtons.forEach (operatorButton => {if (operatorButton.value == '*') operation(operatorButton)})};
+    if (k == '/') {operatorButtons.forEach (operatorButton => {if (operatorButton.value == '/') operation(operatorButton)})};
+    if (k == ',' || k == '.') {add('.')}
+    if (k.ctrlKey) {changeSign()}
+    if (k == 'Enter') {buttonEqual()} //Tecla igual: intro
+    if (k == 'Escape') {buttonClear()} //Tecla borrado total: "esc"
+    if (k == 'Backspace') {buttonDeleteOneNumber()} //Retroceso en escritura : tecla retroceso.
     }
     
