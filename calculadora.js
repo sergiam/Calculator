@@ -1,5 +1,6 @@
 const display = document.getElementById("display");
 const operatorButtons = document.querySelectorAll('.operators');
+const numberButtons = document.querySelectorAll('.numbers');
 var operatorOn = false;
 var num1;
 var num2;
@@ -15,26 +16,32 @@ window.onload = function(){ //Acciones tras cargar la página
 function add(nums)
 {	
     if (nums == "." && display.value == 0) {
-        display.value = "0."
+        display.value += "0.";
+        num1 = display.value;
     }
     else if (!operatorOn && (num1 === undefined || num1 == "")) {
         display.value=nums;
         num1 = display.value;
         operationResult = null;
         console.log(num1);
-    } else if(!operatorOn) {
+    } 
+    else if(!operatorOn) {
         if (num1.length > 9) {
+            buttonDisabled();
             return;
         }
         display.value+=nums;
         num1 = display.value;
         console.log(num1);
-    } else if (operatorOn && (num2 === undefined || num2 == "")){
+    } 
+    else if (operatorOn && (num2 === undefined || num2 == "")){
         display.value=nums;
         num2 = display.value;
         console.log(num2);
-    } else {
+    } 
+    else {
         if (num2.length > 9) {
+            buttonDisabled();
             return;
         }
         display.value+=nums;
@@ -45,22 +52,29 @@ function add(nums)
 
 //Cambiar nombres de variables para que sean coherentes
 //Almacena el signo de la operación (+,-,*,/)
-function operation(sign) {
+function operation(sign) 
+{
     if (operator != null) {
         operator.style.backgroundColor='#d1d1d1';
     } 
     sign.style.backgroundColor='#ff0000';
     operatorOn = true;
     operator = sign;
+    buttonEnable();
     console.log(operator);
 }
 
-function calc(){
+function calc()
+{
     var result;
+    if (operator == null && display.value == 0) {
+        display.value = 0;
+    }
 		if (operator.value == '*') {
            result = parseFloat(num1) * parseFloat(num2);
            console.log(operator.value)
             return result;
+
         } else if (operator.value == '+') {
             result = parseFloat(num1) + parseFloat(num2);
             console.log(operator.value)
@@ -75,15 +89,17 @@ function calc(){
             console.log('error');
             result = display.value = 'ERROR';
             return result;
+
         } else if (operator.value == '/') {
             result = parseFloat(num1) / parseFloat(num2);
             console.log(operator.value)
             return result;
+            
         } 
 } 
 
-function roundResult(){
-   
+function roundResult()
+{
     var numToString;
     var isDecimal = false;
     var integerText = '';
@@ -102,24 +118,24 @@ function roundResult(){
             decimalText = decimalText + numToString[i];
         }
     } 
-    
     decimalText = parseFloat(decimalText).toFixed(10 - integerText.length);
     operationResult = parseFloat(integerText) + parseFloat(decimalText);
 }
 
-function newOperation() {
+function newOperation() 
+{
     console.log('nueva operacion');
     num1 = operationResult;
     operationResult = calc();
     if (operationResult.toString().includes('.')){
     roundResult();
     }
+    buttonDisabled();
     display.value = operationResult;
-    
-    
 }
 
-function buttonEqual(){
+function buttonEqual()
+{
     if (operationResult == null) {
     operationResult = calc();
     console.log(operationResult);
@@ -139,6 +155,7 @@ function buttonEqual(){
         operator = null;
     }
     operator = null;
+    buttonEnable();
 } else {
         newOperation();
     }
@@ -147,7 +164,8 @@ function buttonEqual(){
 }
 
 //Función reseteo calculadora
-function reset(){
+function reset()
+{
     console.log(operator);
     if (operator != null){ 
         operator.style.backgroundColor = '#d1d1d1';
@@ -156,46 +174,50 @@ function reset(){
     num1 = "";
     num2 = "";
     operatorOn = false;
-    
 }
 
 // Cambia signo a positivo o negativo
-function changeSign() {
+function changeSign() 
+{
     var x = display.value;
     var resul = -x;
     display.value = resul;
 }
 
-function buttonClear(){
+function buttonClear()
+{
     display.value = "";
+    buttonEnable();
     reset();
 }
 
-function buttonDeleteOneNumber(){
+function buttonDeleteOneNumber()
+{
     var num = display.value;
     num = num.substring(0, num.length - 1);
     display.value = num;
     num1 = num;
 }
-/*
-function takeValue(x){
-    if (x == "," && document.getElementById('display').value == 0)
-    {
-        document.getElementById("display").value = "0,";
-    } else {
-        document.getElementById("display").value += x;
-    }
+
+
+function buttonDisabled() {
+    if (display.value.length > 9) {
+        numberButtons.forEach (numberButton => numberButton.disabled = true)
+        numberButtons.forEach (numberButton => numberButton.classList.add('buttonDisabled'))
+        document.querySelector('.zero').disabled = true;
+        document.querySelector('.zero').classList.add('buttonDisabled')
+    } 
 }
 
-
-function buttonDeleteOneNumber(x){
-    removeHighlight();
-    document.getElementById('display').value = x;
+function buttonEnable(){
+    numberButtons.forEach (numberButton => numberButton.classList.remove('buttonDisabled'))
+    numberButtons.forEach (numberButton => numberButton.disabled = false)
+    document.querySelector('.zero').disabled = false;
+    document.querySelector('.zero').classList.remove('buttonDisabled')
 }
 
-*/
-
-function teclado (event) { 
+function teclado (event) 
+{ 
     event.preventDefault();
     events = event || window.event;
     k=events.key; 
@@ -215,9 +237,9 @@ function teclado (event) {
     if (k == '*') {operatorButtons.forEach (operatorButton => {if (operatorButton.value == '*') operation(operatorButton)})};
     if (k == '/') {operatorButtons.forEach (operatorButton => {if (operatorButton.value == '/') operation(operatorButton)})};
     if (k == ',' || k == '.') {add('.')}
-    if (k.ctrlKey) {changeSign()}
+    if (k == 'Control') {changeSign()}
     if (k == 'Enter') {buttonEqual()} //Tecla igual: intro
     if (k == 'Escape') {buttonClear()} //Tecla borrado total: "esc"
     if (k == 'Backspace') {buttonDeleteOneNumber()} //Retroceso en escritura : tecla retroceso.
-    }
+}
     
