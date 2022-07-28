@@ -91,6 +91,7 @@ function calc()
         } else if (operator.value == '/' && num2 == '0'){
             console.log('error');
             result = display.value = 'ERROR';
+            disabledBecauseError();
             return result;
 
         } else if (operator.value == '/') {
@@ -135,7 +136,7 @@ function newOperation()
     if (operationResult.toString().includes('.')){
     roundResult();
     }
-    buttonDisabled();
+  
     display.value = operationResult;
 }
 
@@ -147,21 +148,25 @@ function buttonEqual()
     console.log(operationResult);
     if (isNaN(operationResult)) {
         display.value = 'ERROR';
+        disabledBecauseError();
+
     } else if (operationResult > 9999999999 || operationResult < -9999999999) {
         display.value = 'ERROR';
+        disabledBecauseError();
     } 
     else {
         if (operationResult.toString().includes('.')){
         roundResult();
         }
         display.value = operationResult;
+        buttonEnable();
     }
     if (operator != null){ 
         operator.style.backgroundColor = '#d1d1d1';
         operator = null;
     }
     operator = null;
-    buttonEnable();
+    
 } else {
         newOperation();
     }
@@ -209,12 +214,10 @@ function buttonDeleteOneNumber()
 
 // Función que deshabilita los botones
 function buttonDisabled() {
-    if (display.value.length > 9) {
         numberButtons.forEach (numberButton => numberButton.disabled = true)
         numberButtons.forEach (numberButton => numberButton.classList.add('buttonDisabled'))
         document.querySelector('.zero').disabled = true;
         document.querySelector('.zero').classList.add('buttonDisabled')
-    } 
 }
 
 // Función que habilita los botones
@@ -222,8 +225,19 @@ function buttonEnable(){
     numberButtons.forEach (numberButton => numberButton.classList.remove('buttonDisabled'))
     numberButtons.forEach (numberButton => numberButton.disabled = false)
     document.querySelector('.zero').disabled = false;
-    document.querySelector('.zero').classList.remove('buttonDisabled')
+    document.querySelector('.zero').classList.remove('buttonDisabled');
+    operatorButtons.forEach (operatorButton => operatorButton.classList.remove('buttonDisabled'))
+    operatorButtons.forEach (operatorButton => operatorButton.disabled = false)
 }
+
+function disabledBecauseError(){
+    buttonDisabled();
+    operatorButtons.forEach (operatorButton => {if (operatorButton.value != 'borrado') operatorButton.disabled = true});
+    operatorButtons.forEach (operatorButton => {if (operatorButton.value != 'borrado') operatorButton.classList.add('buttonDisabled')});
+
+       
+};
+
 
 // Función que capta las teclas
 function teclado (event) 
