@@ -16,7 +16,7 @@ window.onload = function(){ //Acciones tras cargar la página
 function add(nums)
 {	
     if (nums == "." && display.value == 0) {
-        display.value += "0.";
+        display.value = "0.";
         num1 = display.value;
     }
     else if (!operatorOn && (num1 === undefined || num1 == "")) {
