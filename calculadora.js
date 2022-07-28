@@ -7,9 +7,11 @@ var num2;
 var operator;
 var operationResult;
 
+//Cambiar nombres de variables para que sean coherentes
+
 window.onload = function(){ //Acciones tras cargar la página
-    pantalla=display; //elemento pantalla de salida
-    window.addEventListener('keydown',teclado);
+    pantalla = display; //elemento pantalla de salida
+    window.addEventListener('keydown',teclado); // Función teclado
 }
 
 //Añade los números correspondientes a la calculadora
@@ -50,8 +52,8 @@ function add(nums)
     }
 }
 
-//Cambiar nombres de variables para que sean coherentes
-//Almacena el signo de la operación (+,-,*,/)
+
+//Almacena el signo de la operación y establece el estilo (+,-,*,/)
 function operation(sign) 
 {
     if (operator != null) {
@@ -64,6 +66,7 @@ function operation(sign)
     console.log(operator);
 }
 
+// Función de cálculo
 function calc()
 {
     var result;
@@ -98,6 +101,7 @@ function calc()
         } 
 } 
 
+// Redondea el resultado si es necesario
 function roundResult()
 {
     var numToString;
@@ -122,6 +126,7 @@ function roundResult()
     operationResult = parseFloat(integerText) + parseFloat(decimalText);
 }
 
+// Función que permite hacer una segunda operación
 function newOperation() 
 {
     console.log('nueva operacion');
@@ -134,6 +139,7 @@ function newOperation()
     display.value = operationResult;
 }
 
+// Función que determina que hace el botón de calcular
 function buttonEqual()
 {
     if (operationResult == null) {
@@ -184,6 +190,7 @@ function changeSign()
     display.value = resul;
 }
 
+// Función de limpieza de operación
 function buttonClear()
 {
     display.value = "";
@@ -191,6 +198,7 @@ function buttonClear()
     reset();
 }
 
+// Función que borra el último parámetro del número introducido
 function buttonDeleteOneNumber()
 {
     var num = display.value;
@@ -199,7 +207,7 @@ function buttonDeleteOneNumber()
     num1 = num;
 }
 
-
+// Función que deshabilita los botones
 function buttonDisabled() {
     if (display.value.length > 9) {
         numberButtons.forEach (numberButton => numberButton.disabled = true)
@@ -209,6 +217,7 @@ function buttonDisabled() {
     } 
 }
 
+// Función que habilita los botones
 function buttonEnable(){
     numberButtons.forEach (numberButton => numberButton.classList.remove('buttonDisabled'))
     numberButtons.forEach (numberButton => numberButton.disabled = false)
@@ -216,6 +225,7 @@ function buttonEnable(){
     document.querySelector('.zero').classList.remove('buttonDisabled')
 }
 
+// Función que capta las teclas
 function teclado (event) 
 { 
     event.preventDefault();
@@ -238,8 +248,8 @@ function teclado (event)
     if (k == '/') {operatorButtons.forEach (operatorButton => {if (operatorButton.value == '/') operation(operatorButton)})};
     if (k == ',' || k == '.') {add('.')}
     if (k == 'Control') {changeSign()}
-    if (k == 'Enter') {buttonEqual()} //Tecla igual: intro
-    if (k == 'Escape') {buttonClear()} //Tecla borrado total: "esc"
-    if (k == 'Backspace') {buttonDeleteOneNumber()} //Retroceso en escritura : tecla retroceso.
+    if (k == 'Enter') {buttonEqual()}
+    if (k == 'Escape') {buttonClear()}
+    if (k == 'Backspace') {buttonDeleteOneNumber()}
 }
     
