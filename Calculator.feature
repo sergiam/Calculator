@@ -265,6 +265,36 @@ Examples:
 |            10 |            10 |
 |          -10, |           -10 |
 
+@Manual
+Scenario Outline: Reenabling buttons with no error
+Given the display shows the following value: "1234567890"
+When the user presses the "<button>" button
+Then the "0" button should be enabled
+And the "+-" button should be disabled
+And the "1" button should be enabled
+And the "2" button should be enabled
+And the "3" button should be enabled
+And the "4" button should be enabled
+And the "5" button should be enabled
+And the "6" button should be enabled
+And the "7" button should be enabled
+And the "8" button should be enabled
+And the "9" button should be enabled
+And the "," button should be disabled
+And the "+" button should be enabled
+And the "-" button should be enabled
+And the "*" button should be enabled
+And the "/" button should be enabled
+
+
+Examples:
+|button|
+|   +  |
+|   -  |
+|   *  |
+|   /  |
+
+@Manual
 Scenario Outline: Reenabling buttons with no error
 Given the display shows the following value: "1234567890"
 When the user presses the "<button>" button
@@ -288,12 +318,32 @@ And the "/" button should be enabled
 Examples:
 |button|
 |   C  |
-|   +  |
-|   -  |
-|   *  |
-|   /  |
+
+@Manual
+Scenario Outline: Reenabling buttons with no error
+Given the display shows the following value: "1234567890"
+When the user presses the "<button>" button
+Then the "0" button should be enabled
+And the "+-" button should be enabled
+And the "1" button should be enabled
+And the "2" button should be enabled
+And the "3" button should be enabled
+And the "4" button should be enabled
+And the "5" button should be enabled
+And the "6" button should be enabled
+And the "7" button should be enabled
+And the "8" button should be enabled
+And the "9" button should be enabled
+And the "," button should be disabled
+And the "+" button should be enabled
+And the "-" button should be enabled
+And the "*" button should be enabled
+And the "/" button should be enabled
+
+Examples:
 |   =  |
 
+@Manual
 Scenario Outline: Disabling buttons
 Given the display shows the following value: "<displayNumber>"
 Then the "0" button should be disabled
@@ -315,10 +365,12 @@ Examples:
 |   123456789,5 |
 |  -123456789,5 |
 
+@Manual
 Scenario: Disabling the second comma
 Given the display shows the following value: "3,141592"
 Then the "," button should be disabled
 
+@Manual
 Scenario: Disabling because of error
 Given the display shows the following value: "1"
 And the user presses the "/" button
@@ -343,6 +395,7 @@ And the "+-" button should be disabled
 And the "=" button should be disabled
 And the "C" button should be enabled
 
+@Manual
 Scenario: Reenabling buttons with error
 Given the display shows the following value: "1"
 And the user presses the "/" button

@@ -17,8 +17,8 @@ window.onload = function(){ //Acciones tras cargar la página
 //Añade los números correspondientes a la calculadora
 function add(nums)
 {	
-    if (nums == "." && display.value == 0) {
-        display.value = "0.";
+    if (nums == "," && display.value == 0) {
+        display.value = "0,";
         num1 = display.value;
     }
     else if (!operatorOn && (num1 === undefined || num1 == "")) {
@@ -54,12 +54,19 @@ function add(nums)
 
 
 //Almacena el signo de la operación y establece el estilo (+,-,*,/)
-function operation(sign) 
+function operation(sign)
 {
     if (operator != null) {
         operator.style.backgroundColor='#d1d1d1';
     } 
     sign.style.backgroundColor='#ff0000';
+    if (operator != null) {
+        operationResult = calc();
+        operator = sign
+        num1 = operationResult.toString(); 
+        num2 = "";
+        operationResult = null;
+    }
     operatorOn = true;
     operator = sign;
     buttonEnable();
@@ -74,17 +81,17 @@ function calc()
         display.value = 0;
     }
 		if (operator.value == '*') {
-           result = parseFloat(num1) * parseFloat(num2);
+           result = parseFloat(num1.replace(',','.')) * parseFloat(num2.replace(',','.'));
            console.log(operator.value)
             return result;
 
         } else if (operator.value == '+') {
-            result = parseFloat(num1) + parseFloat(num2);
+            result = parseFloat(num1.replace(',','.')) + parseFloat(num2.replace(',','.'));
             console.log(operator.value)
             return result;
         
         } else if (operator.value == '-') {
-            result = parseFloat(num1) - parseFloat(num2);
+            result = parseFloat(num1.replace(',','.')) - parseFloat(num2.replace(',','.'));
             console.log(operator.value)
             return result;
             
@@ -95,11 +102,13 @@ function calc()
             return result;
 
         } else if (operator.value == '/') {
-            result = parseFloat(num1) / parseFloat(num2);
+            result = parseFloat(num1.replace(',','.')) / parseFloat(num2.replace(',','.'));
             console.log(operator.value)
             return result;
             
-        } 
+        } else if (operatorOn && num2 == null) {
+            display.value = num1;
+        }
 } 
 
 // Redondea el resultado si es necesario
@@ -108,13 +117,13 @@ function roundResult()
     var numToString;
     var isDecimal = false;
     var integerText = '';
-    var decimalText = '0.';
+    var decimalText = '0,';
     
     numToString = operationResult.toString(); 
     
     for(i = 0; i < numToString.length; i++) {
         
-        if (numToString[i] == '.'){
+        if (numToString[i] == ','){
             isDecimal = true;
         } else if (!isDecimal) {
             integerText = integerText + numToString[i];
@@ -127,13 +136,14 @@ function roundResult()
     operationResult = parseFloat(integerText) + parseFloat(decimalText);
 }
 
+
 // Función que permite hacer una segunda operación
 function newOperation() 
 {
     console.log('nueva operacion');
     num1 = operationResult;
     operationResult = calc();
-    if (operationResult.toString().includes('.')){
+    if (operationResult.toString().includes(',')){
     roundResult();
     }
   
@@ -148,6 +158,7 @@ function buttonEqual()
     console.log(operationResult);
     if (isNaN(operationResult)) {
         display.value = 'ERROR';
+
         disabledBecauseError();
 
     } else if (operationResult > 9999999999 || operationResult < -9999999999) {
@@ -155,7 +166,7 @@ function buttonEqual()
         disabledBecauseError();
     } 
     else {
-        if (operationResult.toString().includes('.')){
+        if (operationResult.toString().includes(',')){
         roundResult();
         }
         display.value = operationResult;
@@ -260,7 +271,7 @@ function teclado (event)
     if (k == '-') {operatorButtons.forEach (operatorButton => {if (operatorButton.value == '-') operation(operatorButton)})};
     if (k == '*') {operatorButtons.forEach (operatorButton => {if (operatorButton.value == '*') operation(operatorButton)})};
     if (k == '/') {operatorButtons.forEach (operatorButton => {if (operatorButton.value == '/') operation(operatorButton)})};
-    if (k == ',' || k == '.') {add('.')}
+    if (k == ',' || k == '.') {add(',')}
     if (k == 'Control') {changeSign()}
     if (k == 'Enter') {buttonEqual()}
     if (k == 'Escape') {buttonClear()}
