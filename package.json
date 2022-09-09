@@ -4,7 +4,10 @@
   },
   "devDependencies": {
     "@cucumber/cucumber": "^8.5.2",
-    "@playwright/test": "^1.25.1",
-    "playwright": "^1.25.1"
+    "@playwright/test": "^1.25.2",
+    "playwright": "^1.25.2"
+  },
+  "dependencies": {
+    "yarn": "^1.22.19"
   }
 }

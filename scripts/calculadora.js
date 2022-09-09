@@ -17,10 +17,18 @@ window.onload = function(){ //Acciones tras cargar la página
 //Añade los números correspondientes a la calculadora
 function add(nums)
 {	
-    if (nums == "," && display.value == 0) {
+    if (display.value == 0 && nums == 0) {
+        return;    
+    }
+    else if (nums == "," && display.value == 0) {
         display.value = "0,";
         num1 = display.value;
+    
     }
+    else if (display.value.includes(",") && nums == ",") {
+        return;
+    }
+    
     else if (!operatorOn && (num1 === undefined || num1 == "")) {
         display.value=nums;
         num1 = display.value;
@@ -86,7 +94,8 @@ function calc()
             return result;
 
         } else if (operator.value == '+') {
-            result = parseFloat(num1.replace(',','.')) + parseFloat(num2.replace(',','.'));
+            result = parseFloat(num1.toString().replace(',','.')) + parseFloat(num2.toString().replace(',','.'));
+            console.log(result);
             console.log(operator.value)
             return result;
         
@@ -120,6 +129,7 @@ function roundResult()
     var decimalText = '0,';
     
     numToString = operationResult.toString(); 
+    console.log(numToString);
     
     for(i = 0; i < numToString.length; i++) {
         
@@ -132,7 +142,7 @@ function roundResult()
             decimalText = decimalText + numToString[i];
         }
     } 
-    decimalText = parseFloat(decimalText).toFixed(10 - integerText.length);
+    decimalText = parseFloat(decimalText).toFixed(10 - integerText.length).replace(',','.');
     operationResult = parseFloat(integerText) + parseFloat(decimalText);
 }
 
@@ -166,7 +176,8 @@ function buttonEqual()
         disabledBecauseError();
     } 
     else {
-        if (operationResult.toString().includes(',')){
+        if (operationResult.toString().includes('.')){
+            console.log('pepe')
         roundResult();
         }
         display.value = operationResult;
@@ -200,16 +211,33 @@ function reset()
 
 // Cambia signo a positivo o negativo
 function changeSign() 
-{
-    var x = display.value;
-    var resul = -x;
+{   
+
+    var resul = display.value;
+    console.log(typeof(display.value))
+   
+    if (resul[0] == "-") {
+        resul = resul.substring(1,resul.length);
+        console.log(resul);
+    }
+    
+    else {
+        if(display.value == 0 || display.value == "0,") {
+            return;
+        }
+
+        resul = "-" + resul;
+    }
     display.value = resul;
+    
+
+  
 }
 
 // Función de limpieza de operación
 function buttonClear()
 {
-    display.value = "";
+    display.value = 0;
     buttonEnable();
     reset();
 }
