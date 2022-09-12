@@ -142,7 +142,9 @@ function roundResult()
             decimalText = decimalText + numToString[i];
         }
     } 
-    decimalText = parseFloat(decimalText).toFixed(10 - integerText.length).replace(',','.');
+    console.log(integerText.length);
+    decimalText = parseFloat(decimalText).toFixed(10).replace(',','.');
+    console.log(decimalText);
     operationResult = parseFloat(integerText) + parseFloat(decimalText);
 }
 
