@@ -36,7 +36,7 @@ function add(nums)
         console.log(num1);
     } 
     else if(!operatorOn) {
-        if (num1.length > 9) {
+        if (num1.length >= 10) {
             buttonDisabled();
             return;
         }
@@ -50,7 +50,7 @@ function add(nums)
         console.log(num2);
     } 
     else {
-        if (num2.length > 9) {
+        if (num2.length >= 10) {
             buttonDisabled();
             return;
         }
@@ -180,7 +180,7 @@ function buttonEqual()
     else {
         if (operationResult.toString().includes('.')){
             console.log('pepe')
-        roundResult();
+            roundResult();
         }
         display.value = operationResult;
         buttonEnable();
